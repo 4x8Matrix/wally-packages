@@ -126,7 +126,7 @@ function Console.Functions:FormatVaradicArguments(...)
 
 	if messageType == "string" then
 		local sourceString = table.remove(args, 1)
-		local filteredString = string.gsub(sourceString, "%%", "%%%%")
+		local filteredString = string.gsub(tostring(sourceString), "%%", "%%%%")
 
 		message = filteredString
 	end
@@ -135,7 +135,7 @@ function Console.Functions:FormatVaradicArguments(...)
 		args[index] = self:ToPrettyString(value)
 	end
 
-	table.clear(Console.Cache)
+	table.clear(Console.Cache :: any)
 
 	return string.format(message, table.unpack(args))
 end
@@ -705,12 +705,20 @@ function Console.Interface.is(object: Console?): boolean
 	return metatable and metatable.__type == Console.Type
 end
 
-export type Console = typeof(Console.Prototype) & {
-	id: string,
-	level: number,
-	schema: string,
-	enabled: boolean,
-	logs: {},
-}
+export type Console = typeof(setmetatable(
+	{} :: {
+		id: string?,
+		level: number,
+		schema: string,
+		traceback: boolean?,
+		enabled: boolean,
+		orphaned: boolean?,
+		logs: {},
+	},
+	{} :: {
+		__index: typeof(Console.Prototype),
+		__type: string,
+	}
+))
 
 return Console.Interface
