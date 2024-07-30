@@ -1,6 +1,8 @@
+--!strict
+
 local RunService = game:GetService("RunService")
 
-local Signal = require(script.Parent.Signal)
+local Signal = require((script :: any).Parent.Signal) :: any
 
 local DEFAULT_LOGGING_SCHEMA = "[%s][%s] :: %s"
 local MAXIMUM_CACHED_LOGS = 500
