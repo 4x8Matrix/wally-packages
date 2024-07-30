@@ -491,9 +491,9 @@ end
 		Console:Log("Hello, World!") -- > [Console][log]: "Hello, World!"
 		Console:FetchLogs() -- > [[
 			{
-				"log",
-				"[Console][log]: \"Hello, World!\"",
-				"Console"
+				logType = "log",
+				message = "[Console][log]: \"Hello, World!\"",
+				logId = "Console"
 			}
 		]]--
 	```

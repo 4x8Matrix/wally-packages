@@ -58,58 +58,56 @@ return function()
 		end)
 
 		it("Should be able to critical message", function()
+			local consoleObject = ConsoleModule.new("Example")
+
 			expect(function()
-				local consoleObject = ConsoleModule.new("Example")
-
-				consoleObject:SetLogLevel(10)
 				consoleObject:Critical("Test")
-
-				expect(consoleObject:FetchLogs(1)[1]).to.equal("critical")
 			end).to.throw()
+
+			expect(consoleObject:FetchLogs(1)[1][1]).to.equal("critical")
 		end)
 
 		it("Should be able to error message", function()
+			local consoleObject = ConsoleModule.new("Example")
+
 			expect(function()
-				local consoleObject = ConsoleModule.new("Example")
-
-				consoleObject:SetLogLevel(10)
 				consoleObject:Error("Test")
-
-				expect(consoleObject:FetchLogs(1)[1]).to.equal("error")
 			end).to.throw()
+			
+			expect(consoleObject:FetchLogs(1)[1][1]).to.equal("error")
 		end)
 
 		it("Should be able to warn message", function()
-			expect(function()
-				local consoleObject = ConsoleModule.new("Example")
+			local consoleObject = ConsoleModule.new("Example")
 
+			expect(function()
 				consoleObject:SetLogLevel(10)
 				consoleObject:Warn("Test")
-
-				expect(consoleObject:FetchLogs(1)[1]).to.equal("warn")
-			end).to.throw()
+			end).never.to.throw()
+			
+			expect(consoleObject:FetchLogs(1)[1][1]).to.equal("warn")
 		end)
 
 		it("Should be able to log message", function()
-			expect(function()
-				local consoleObject = ConsoleModule.new("Example")
+			local consoleObject = ConsoleModule.new("Example")
 
+			expect(function()
 				consoleObject:SetLogLevel(10)
 				consoleObject:Log("Test")
-
-				expect(consoleObject:FetchLogs(1)[1]).to.equal("log")
-			end).to.throw()
+			end).never.to.throw()
+			
+			expect(consoleObject:FetchLogs(1)[1][1]).to.equal("log")
 		end)
 
 		it("Should be able to debug message", function()
-			expect(function()
-				local consoleObject = ConsoleModule.new("Example")
+			local consoleObject = ConsoleModule.new("Example")
 
+			expect(function()
 				consoleObject:SetLogLevel(10)
 				consoleObject:Debug("Test")
+			end).never.to.throw()
 
-				expect(consoleObject:FetchLogs(1)[1]).to.equal("debug")
-			end).to.throw()
+			expect(consoleObject:FetchLogs(1)[1][1]).to.equal("debug")
 		end)
 	end)
 end
