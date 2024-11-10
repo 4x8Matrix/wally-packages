@@ -130,6 +130,11 @@ function ClassIndex.Public.GetClassMembers(
 	includeNonScriptable: boolean?
 ): { string }
 	local class = apiDump.Classes[className]
+
+	if not class then
+		return { }
+	end
+
 	local classMembers = {}
 
 	if not security then
@@ -223,7 +228,16 @@ end
 ]=]
 function ClassIndex.Public.GetClassMemberType(className: string, memberName: string): memberType
 	local class = apiDump.Classes[className]
+
+	if not class then
+		return "Data"
+	end
+
 	local member = class.Members[memberName]
+
+	if not member then
+		return "Data"
+	end
 
 	return member.MemberType
 end
@@ -249,7 +263,16 @@ end
 ]=]
 function ClassIndex.Public.GetClassMemberTags(className: string, memberName: string): memberTags
 	local class = apiDump.Classes[className]
+
+	if not class then
+		return { }
+	end
+
 	local member = class.Members[memberName]
+
+	if not member then
+		return { }
+	end
 
 	local shallowClone = {}
 
@@ -285,7 +308,16 @@ function ClassIndex.Public.GetClassMemberSecurity(
 	memberName: string
 ): { Read: memberSecurity, Write: memberSecurity }
 	local class = apiDump.Classes[className]
+
+	if not class then
+		return { Read = "None", Write = "None" }
+	end
+
 	local member = class.Members[memberName]
+
+	if not member then
+		return { Read = "None", Write = "None" }
+	end
 
 	local shallowClone = {}
 
@@ -326,7 +358,16 @@ end
 ]=]
 function ClassIndex.Public.GetClassMemberThreadSafety(className: string, memberName: string): memberThreadSafety
 	local class = apiDump.Classes[className]
+
+	if not class then
+		return "Unsafe"
+	end
+
 	local member = class.Members[memberName]
+
+	if not member then
+		return "Unsafe"
+	end
 
 	return member.ThreadSafety
 end
@@ -350,6 +391,10 @@ end
 function ClassIndex.Public.GetClassSuperclass(className: string)
 	local class = apiDump.Classes[className]
 
+	if not class then
+		return "<<ROOT>>"
+	end
+
 	return class.Superclass
 end
 
@@ -372,6 +417,11 @@ end
 ]=]
 function ClassIndex.Public.GetClassSuperclasses(className: string)
 	local currentClass = apiDump.Classes[className]
+
+	if not currentClass then
+		return { "<<ROOT>>" }
+	end
+
 	local classes = {}
 
 	while currentClass do
