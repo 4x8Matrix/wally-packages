@@ -130,18 +130,26 @@ end
 	@within State
 
 	@param value any
+	@param updateObject boolean?
 
 	Set the value of a state, when setting a state the 'Changed' signal will invoke.
 
 	```lua
-		local Value = State.new(0)
+	local Value = State.new(0)
+	Value:Set(1)
+	```
 
-		Value:Set(1)
+	For state objects that are created using the `fromAttribute` or `fromValue` methods, the object will be updated with the new value. You can disable this by passing `false` for the `updateObject` parameter.
+
+	```lua
+	local Value = State.fromAttribute(workspace.object, "attributeName")
+	Value:Set(1, false)
 	```
 ]=]
-function State.Prototype:Set(value: any): State
-	local oldValue = self.Value
+function State.Prototype:Set(value: any, updateObject: boolean?): State
+	updateObject = if typeof(updateObject) == "boolean" then updateObject else true
 
+	local oldValue = self.Value
 	if oldValue == value then
 		return self
 	end
@@ -156,6 +164,16 @@ function State.Prototype:Set(value: any): State
 
 	self.Value = value
 	self.Changed:Fire(value, oldValue)
+
+	if updateObject then
+		if self._fromAttribute then
+			self.Instance:SetAttribute(self.Attribute, value)
+		end
+
+		if self._fromValue then
+			self.Instance.Value = value
+		end
+	end
 
 	return self
 end
@@ -386,6 +404,7 @@ end
 function State.Interface.fromAttribute(object: Instance, attribute: string): State
 	local attributeValue = object:GetAttribute(attribute)
 	local stateObject = State.Interface.new(attributeValue)
+	stateObject._fromAttribute = true
 
 	local attributeConnections = {}
 
@@ -425,6 +444,7 @@ function State.Interface.fromValue(object: Instance & { Value: any? }): State
 	assert(object.Value, "instance must be a Value object!")
 
 	local stateObject = State.Interface.new(object.Value)
+	stateObject._fromValue = true
 
 	local valueConnection = object:GetPropertyChangedSignal("Value"):Connect(function()
 		stateObject:Set(object.Value)
