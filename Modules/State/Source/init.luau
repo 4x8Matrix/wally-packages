@@ -119,6 +119,9 @@ end
 	```
 ]=]
 function State.Prototype:Destroy(): ()
+	self._instance = nil
+	self._fromAttributeName = nil
+	self._fromValue = nil
 	self._record = {}
 	self.Value = nil
 
@@ -165,13 +168,13 @@ function State.Prototype:Set(value: any, updateObject: boolean?): State
 	self.Value = value
 	self.Changed:Fire(value, oldValue)
 
-	if updateObject then
-		if self._fromAttribute then
-			self.Instance:SetAttribute(self.Attribute, value)
+	if updateObject and self._instance then
+		if self._fromAttributeName then
+			self._instance:SetAttribute(self._fromAttributeName, value)
 		end
 
 		if self._fromValue then
-			self.Instance.Value = value
+			self._instance.Value = value
 		end
 	end
 
@@ -404,7 +407,8 @@ end
 function State.Interface.fromAttribute(object: Instance, attribute: string): State
 	local attributeValue = object:GetAttribute(attribute)
 	local stateObject = State.Interface.new(attributeValue)
-	stateObject._fromAttribute = true
+	stateObject._fromAttributeName = attribute
+	stateObject._instance = object
 
 	local attributeConnections = {}
 
@@ -445,6 +449,7 @@ function State.Interface.fromValue(object: Instance & { Value: any? }): State
 
 	local stateObject = State.Interface.new(object.Value)
 	stateObject._fromValue = true
+	stateObject._instance = object
 
 	local valueConnection = object:GetPropertyChangedSignal("Value"):Connect(function()
 		stateObject:Set(object.Value)
