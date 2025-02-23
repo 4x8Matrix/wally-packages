@@ -406,6 +406,38 @@ function State.Interface.fromAttribute(object: Instance, attribute: string): Sta
 end
 
 --[=[
+	@function fromValue
+	@within State
+
+	@param object Instance & { Value: any? }
+
+	@return State
+
+	Wrapper for `State.new` however wraps around a Roblox Instance, the State object will always have the latest value.
+
+	```lua
+		local object = State.fromValue(workspace.object)
+
+		...
+	```
+]=]
+function State.Interface.fromValue(object: Instance & { Value: any? }): State
+	assert(object.Value, "instance must be a Value object!")
+
+	local stateObject = State.Interface.new(object.Value)
+
+	local valueConnection = object:GetPropertyChangedSignal("Value"):Connect(function()
+		stateObject:Set(object.Value)
+	end)
+
+	stateObject.Destroyed:Once(function()
+		valueConnection:Disconnect()
+	end)
+
+	return stateObject
+end
+
+--[=[
 	@function is
 	@within State
 
