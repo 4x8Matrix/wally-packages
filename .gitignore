@@ -5,8 +5,7 @@
 **/ServerPackages/**
 **/DevPackages/**
 
+**/luau_packages/**
+**/lune_packages/**
+
 sourcemap.json
-
-node_modules
-
-.next

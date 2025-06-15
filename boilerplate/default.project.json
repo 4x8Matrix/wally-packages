@@ -1,0 +1,6 @@
+{
+	"name": "Boilerplate",
+	"tree": {
+		"$source": "src"
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"name": "Boilerplate",
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"Packages": {
+				"$path": "Packages",
+				"Boilerplate": {
+					"$path": "src"
+				}
+			}
+		}
+	}
+}
