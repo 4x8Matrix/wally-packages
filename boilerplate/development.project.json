@@ -1,5 +1,6 @@
 {
 	"name": "Boilerplate",
+	"emitLegacyScripts": false,
 	"tree": {
 		"$className": "DataModel",
 		"ReplicatedStorage": {

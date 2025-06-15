@@ -1,5 +1,5 @@
 {
-	"name": "boilerplate",
+	"name": "Console",
 	"emitLegacyScripts": false,
 	"tree": {
 		"$path": "src"

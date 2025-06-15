@@ -1,12 +1,12 @@
 {
-	"name": "camera-profiler",
+	"name": "Console",
 	"emitLegacyScripts": false,
 	"tree": {
 		"$className": "DataModel",
 		"ReplicatedStorage": {
 			"Packages": {
-				"$path": "Packages",
-				"CameraProfiler": {
+				"$className": "Folder",
+				"Console": {
 					"$path": "src"
 				}
 			}

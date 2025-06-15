@@ -1,15 +1,6 @@
 {
 	"name": "camera-profiler",
-	"syncRules": [
-		{
-			"pattern": "*.client.luau",
-			"use": "runContextClientScript"
-		},
-		{
-			"pattern": "*.server.luau",
-			"use": "runContextServerScript"
-		}
-	],
+	"emitLegacyScripts": false,
 	"tree": {
 		"$path": "src"
 	}
