@@ -1,0 +1,24 @@
+{
+	"name": "camera-profiler",
+	"syncRules": [
+		{
+			"pattern": "*.client.luau",
+			"use": "runContextClientScript"
+		},
+		{
+			"pattern": "*.server.luau",
+			"use": "runContextServerScript"
+		}
+	],
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"Packages": {
+				"$path": "Packages",
+				"CameraProfiler": {
+					"$path": "src"
+				}
+			}
+		}
+	}
+}

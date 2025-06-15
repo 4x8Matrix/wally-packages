@@ -1,0 +1,11 @@
+[package]
+name = "4x8matrix/camera-profiler"
+version = "2.0.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[place]
+shared-packages = "game.ReplicatedStorage.Packages"
+
+[dependencies]
+Signal = "sleitnick/signal@^2"
