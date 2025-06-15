@@ -1,0 +1,12 @@
+[package]
+name = "4x8matrix/emoticon-reporter"
+version = "2.0.0"
+realm = "shared"
+registry = "https://github.com/UpliftGames/wally-index"
+licence = "MIT"
+authors = ["AsynchronousMatrix (https://www.asyncmatrix.dev/)"]
+
+description = "DEPRECATED - See `deprecated` folder here: https://github.com/4x8Matrix/wally-packages"
+
+exclude = ["**"]
+include = ["src", "src/*", "default.project.json", "wally.toml"]

@@ -1,0 +1,15 @@
+{
+	"name": "Windline",
+	"emitLegacyScripts": false,
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"Packages": {
+				"$path": "Packages",
+				"Windline": {
+					"$path": "src"
+				}
+			}
+		}
+	}
+}
