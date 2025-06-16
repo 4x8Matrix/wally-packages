@@ -24,7 +24,7 @@ local LOG_LEVEL_PRIORITIES = { "Debug", "Info", "Notice", "Warn", "Error", "Crit
 local configurations: { [string]: Configuration } = {}
 local globalConfiguration = {
 	LogLevel = "Debug",
-	Format = "%s[%s][%s][%s]: %s%s%s",
+	Format = "%*[%*][%*][%*]: %*%*%*",
 	Timestamps = false,
 	ANSI = false,
 	Tracebacks = false,
@@ -54,7 +54,7 @@ local globalConfiguration = {
         Timestamps = true, -- Enable timestamps
         ANSI = true,       -- Enable ANSI colors (requires an ANSI-compatible console)
         Name = "MyAwesomeScript", -- Custom name for the logger instance
-        Format = "[%s][%s][%s][%s]: %s%s%s" -- Custom format string (see Console.Configure for details)
+        Format = "[%*][%*][%*][%*]: %*%*%*" -- Custom format string (see Console.Configure for details)
     })
 
     Console:Debug("This debug message will not appear due to LogLevel configuration.")
@@ -91,16 +91,16 @@ local function formatValue(value: any, config: Configuration, seen: { [{}]: bool
 			local key = formatValue(valueKey, config, seenStore)
 			local formattedVal = formatValue(valueValue, config, seenStore)
 
-			table.insert(parts, string.format("[%s] = %s", key, formattedVal))
+			table.insert(parts, string.format("[%*] = %*", key, formattedVal))
 		end
 
 		return "{" .. table.concat(parts, ", ") .. "}"
 	elseif type == "string" then
-		return string.format('"%s"', tostring(value))
+		return string.format('"%*"', tostring(value))
 	elseif type == "Instance" then
-		return string.format("Instance<'%s'>", tostring(value))
+		return string.format("Instance<'%*'>", tostring(value))
 	elseif type == "EnumItem" then
-		return string.format("EnumItem<'%s.%s'>", value.EnumType.Name, value.Name)
+		return string.format("EnumItem<'%*.%*'>", value.EnumType.Name, value.Name)
 	elseif type == "CFrame" then
 		local x, y, z = value.X, value.Y, value.Z
 		local r00, r01, r02, r10, r11, r12, r20, r21, r22 = value:GetComponents()
@@ -124,10 +124,10 @@ local function formatValue(value: any, config: Configuration, seen: { [{}]: bool
 	elseif type == "Vector2" then
 		return string.format("Vector2<'X:%.2f,Y:%.2f'>", value.X, value.Y)
 	elseif type == "UDim" then
-		return string.format("UDim<'Scale:%.2f,Offset:%d'>", value.Scale, value.Offset)
+		return string.format("UDim<'Scale:%.2f,Offset:%*'>", value.Scale, value.Offset)
 	elseif type == "UDim2" then
 		return string.format(
-			"UDim2<'X:Scale%.2f+Offset%d, Y:Scale%.2f+Offset%d'>",
+			"UDim2<'X:Scale%.2f+Offset%*, Y:Scale%.2f+Offset%*'>",
 			value.X.Scale,
 			value.X.Offset,
 			value.Y.Scale,
@@ -136,13 +136,13 @@ local function formatValue(value: any, config: Configuration, seen: { [{}]: bool
 	elseif type == "Color3" then
 		return string.format("Color3<'R:%.2f,G:%.2f,B:%.2f'>", value.R, value.G, value.B)
 	elseif type == "BrickColor" then
-		return string.format("BrickColor<'%s'>", value.Name)
+		return string.format("BrickColor<'%*'>", value.Name)
 	elseif type == "NumberRange" then
 		return string.format("NumberRange<'Min:%.2f,Max:%.2f'>", value.Min, value.Max)
 	elseif type == "NumberSequence" then
-		return string.format("NumberSequence<'%d points'>", #value.Keypoints)
+		return string.format("NumberSequence<'%* points'>", #value.Keypoints)
 	elseif type == "ColorSequence" then
-		return string.format("ColorSequence<'%d points'>", #value.Keypoints)
+		return string.format("ColorSequence<'%* points'>", #value.Keypoints)
 	elseif type == "Rect" then
 		return string.format(
 			"Rect<'Min:(%.2f,%.2f),Max:(%.2f,%.2f)'>",
@@ -210,21 +210,16 @@ end
 
     If this fails, it'll fallback to returning the full path name.
 ]]
-local function getScriptName(level: number): string
-	local path = debug.info(level + 1, "s")
-	local name = string.match(path, "[^%/\\]+%.?%w*$")
+local function getScriptName(): string
+	-- selene: allow(incorrect_standard_library_use)
+	local oldMemoryCategory = debug.getmemorycategory()
 
-	if name then
-		local baseName = string.match(name, "([^%.]+)$")
+	debug.resetmemorycategory()
+	-- selene: allow(incorrect_standard_library_use)
+	local script = debug.getmemorycategory()
+	debug.setmemorycategory(oldMemoryCategory)
 
-		if baseName then
-			return baseName
-		else
-			return name
-		end
-	end
-
-	return path
+	return script
 end
 
 --[[
@@ -232,7 +227,7 @@ end
 ]]
 local function constructContent(...): string
 	local configuration = getScriptConfiguration(2)
-	local scriptName = getScriptName(2)
+	local scriptName = getScriptName()
 	local logLevel = debug.info(2, "n")
 	local message = stringify(configuration, ...)
 	local format = configuration.Format or globalConfiguration.Format
@@ -246,8 +241,8 @@ local function constructContent(...): string
 		`{ansiEnabled and LOG_LEVEL_COLORS[logLevel] or ``}`,
 		`{timestampsEnabled and `{timestamp}` or `-`}`,
 		`{configuration.Name or scriptName}`,
-		`{logLevel}`,
-		`{message}`,
+		logLevel,
+		message,
 		`{ansiEnabled and RESET or ""}`,
 		`{tracebackEnabled and `\n{debug.traceback("", 3)}` or ``}`
 	)
