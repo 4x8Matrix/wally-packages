@@ -70,6 +70,9 @@ local globalConfiguration = {
 ]=]
 local Console = {}
 
+Console.Prototype = {}
+Console.Public = {}
+
 --[[
     Responsible for taking an input of any type, and formatting it in a way which makes it human readable.
 ]]
@@ -195,14 +198,12 @@ end
 --[[
     Will return the configuration for the script that is calling a function in the Console library.
 ]]
-local function getScriptConfiguration(level: number): Configuration
-	local objectHash = debug.info(level + 1, "s")
-
-	if not configurations[objectHash] then
-		configurations[objectHash] = {}
+local function getScriptConfiguration(hash: string): Configuration
+	if not configurations[hash] then
+		configurations[hash] = {}
 	end
 
-	return configurations[objectHash]
+	return configurations[hash]
 end
 
 --[[
@@ -210,24 +211,16 @@ end
 
     If this fails, it'll fallback to returning the full path name.
 ]]
-local function getScriptName(): string
-	-- selene: allow(incorrect_standard_library_use)
-	local oldMemoryCategory = debug.getmemorycategory()
-
-	debug.resetmemorycategory()
-	-- selene: allow(incorrect_standard_library_use)
-	local script = debug.getmemorycategory()
-	debug.setmemorycategory(oldMemoryCategory)
-
-	return script
+local function getScriptName(hash: string): string
+	return hash
 end
 
 --[[
     Will construct the message that you'll see in the output.
 ]]
-local function constructContent(...): string
-	local configuration = getScriptConfiguration(2)
-	local scriptName = getScriptName()
+local function constructContent(hash: string, ...): string
+	local configuration = getScriptConfiguration(hash)
+	local scriptName = getScriptName(hash)
 	local logLevel = debug.info(2, "n")
 	local message = stringify(configuration, ...)
 	local format = configuration.Format or globalConfiguration.Format
@@ -253,8 +246,8 @@ end
 --[[
     returns a boolean that defines if the API that calls this function is able to log to the output.
 ]]
-local function meetsLogLevelRequirement(): boolean
-	local configuration = getScriptConfiguration(2)
+local function meetsLogLevelRequirement(hash: string): boolean
+	local configuration = getScriptConfiguration(hash)
 	local targetLoglevel = configuration.LogLevel or globalConfiguration.LogLevel
 	local targetLoglevelPriority = table.find(LOG_LEVEL_PRIORITIES, targetLoglevel)
 	local currentLogLevel = debug.info(2, "n")
@@ -268,8 +261,8 @@ end
 
     Will take a value, and return the stringified version of said value.
 ]=]
-function Console.Stringify(_: Console, value): string
-	return stringify(getScriptConfiguration(1), value)
+function Console.Prototype.Stringify(self: Console, value): string
+	return stringify(getScriptConfiguration(self.Name), value)
 end
 
 --[=[
@@ -278,9 +271,9 @@ end
     Debug logs are given the numerical value “7.” These logs typically contain information that is only useful
     during the debug phase and may be of little value during production.
 ]=]
-function Console.Debug(_: Console, ...)
-	if meetsLogLevelRequirement() then
-		local content = constructContent(...)
+function Console.Prototype.Debug(self: Console, ...)
+	if meetsLogLevelRequirement(self.Name) then
+		local content = constructContent(self.Name, ...)
 
 		print(content)
 	end
@@ -292,9 +285,9 @@ end
     Informational logs are given the numerical value “6.” They include information about successful operations
     within the application, such as a successful start, pause, or exit of the application.
 ]=]
-function Console.Info(_: Console, ...)
-	if meetsLogLevelRequirement() then
-		local content = constructContent(...)
+function Console.Prototype.Info(self: Console, ...)
+	if meetsLogLevelRequirement(self.Name) then
+		local content = constructContent(self.Name, ...)
 
 		print(content)
 	end
@@ -307,9 +300,9 @@ end
     are not errors. Notice logs are technically normal, but still significant enough to have their own severity
     level between information and warning.
 ]=]
-function Console.Notice(_: Console, ...)
-	if meetsLogLevelRequirement() then
-		local content = constructContent(...)
+function Console.Prototype.Notice(self: Console, ...)
+	if meetsLogLevelRequirement(self.Name) then
+		local content = constructContent(self.Name, ...)
 
 		print(content)
 	end
@@ -322,9 +315,9 @@ end
     Error conditions happen when an operation fails, while a warning might indicate that an operation will fail in the
     future if action is not taken now.
 ]=]
-function Console.Warn(_: Console, ...)
-	if meetsLogLevelRequirement() then
-		local content = constructContent(...)
+function Console.Prototype.Warn(self: Console, ...)
+	if meetsLogLevelRequirement(self.Name) then
+		local content = constructContent(self.Name, ...)
 
 		warn(content)
 	end
@@ -336,9 +329,9 @@ end
     Error logs are given the numerical value “3.” This category is assigned to event logs that contain an application
     error message.
 ]=]
-function Console.Error(_: Console, ...)
-	if meetsLogLevelRequirement() then
-		local content = constructContent(...)
+function Console.Prototype.Error(self: Console, ...)
+	if meetsLogLevelRequirement(self.Name) then
+		local content = constructContent(self.Name, ...)
 
 		error(content, math.huge)
 	end
@@ -350,9 +343,9 @@ end
     Critical logs are given the numerical value “2.” This category is assigned for critical errors, such as hardware
     failure.
 ]=]
-function Console.Critical(_: Console, ...)
-	if meetsLogLevelRequirement() then
-		local content = constructContent(...)
+function Console.Prototype.Critical(self: Console, ...)
+	if meetsLogLevelRequirement(self.Name) then
+		local content = constructContent(self.Name, ...)
 
 		error(content, math.huge)
 	end
@@ -365,9 +358,9 @@ end
     response, such as when a system database becomes corrupted and must be restored to prevent the loss of critical
     data or services.
 ]=]
-function Console.Alert(_: Console, ...)
-	if meetsLogLevelRequirement() then
-		local content = constructContent(...)
+function Console.Prototype.Alert(self: Console, ...)
+	if meetsLogLevelRequirement(self.Name) then
+		local content = constructContent(self.Name, ...)
 
 		error(content, math.huge)
 	end
@@ -379,9 +372,9 @@ end
     Emergency logs are given the numerical value “0”. This category is assigned when an event log indicates that the
     system is completely unusable.
 ]=]
-function Console.Emergency(_: Console, ...)
-	if meetsLogLevelRequirement() then
-		local content = constructContent(...)
+function Console.Prototype.Emergency(self: Console, ...)
+	if meetsLogLevelRequirement(self.Name) then
+		local content = constructContent(self.Name, ...)
 
 		error(content, math.huge)
 	end
@@ -394,8 +387,8 @@ end
     Each script maintains its own configuration, allowing for granular control over its logging output.
     Settings applied here will override any global defaults set by `Console.SetDefaults`.
 ]=]
-function Console.Configure(_: Console, config: Configuration)
-	local scriptConfig = getScriptConfiguration(1)
+function Console.Prototype.Configure(self: Console, config: Configuration)
+	local scriptConfig = getScriptConfiguration(self.Name)
 
 	for key, value in config do
 		scriptConfig[key] = value
@@ -409,7 +402,7 @@ end
     These defaults apply to all scripts that use the Console package unless a script
     explicitly overrides them using `Console.Configure()`.
 ]=]
-function Console.SetDefaults(_: Console, config: Configuration)
+function Console.Public.setDefaults(config: Configuration)
 	for key, value in config do
 		if globalConfiguration[key] ~= nil then
 			globalConfiguration[key] = value
@@ -417,7 +410,27 @@ function Console.SetDefaults(_: Console, config: Configuration)
 	end
 end
 
-export type Console = typeof(Console)
+--[=[
+    @within Console
+
+	Will instantiate a new console object, this is how you'll communicate with the 
+	console library.
+]=]
+function Console.Public.new(name: string, config: Configuration?)
+	local object = setmetatable(
+		{
+			Name = name,
+		} :: Console,
+		{ __index = Console.Prototype }
+	)
+
+	if config then
+		object:Configure(config)
+	end
+
+	return object
+end
+
 export type LogLevel = "Debug" | "Info" | "Notice" | "Warn" | "Error" | "Critical" | "Alert" | "Emergency"
 export type Configuration = {
 	LogLevel: LogLevel?,
@@ -428,5 +441,8 @@ export type Configuration = {
 	Timestamps: boolean?,
 	ANSI: boolean?,
 }
+export type Console = typeof(Console.Prototype) & {
+	Name: string,
+}
 
-return Console
+return Console.Public
