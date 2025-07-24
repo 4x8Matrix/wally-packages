@@ -14,11 +14,8 @@ jobs:
   lint-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Rokit
-        uses: CompeyDev/setup-rokit@v0.1.2
+      - uses: actions/checkout@v4
+      - uses: CompeyDev/setup-rokit@v0.1.2
 
       - name: Run Linter
         run: lune run lint
@@ -26,11 +23,8 @@ jobs:
   type-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Rokit
-        uses: CompeyDev/setup-rokit@v0.1.2
+      - uses: actions/checkout@v4
+      - uses: CompeyDev/setup-rokit@v0.1.2
 
       - name: Run Linter
         run: lune run type
@@ -38,11 +32,15 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: CompeyDev/setup-rokit@v0.1.2
+      - uses: lumin-org/setup-pesde@v0.4.0
 
-      - name: Setup Rokit
-        uses: CompeyDev/setup-rokit@v0.1.2
+      - name: Install binary dependencies
+        run: rokit install --no-trust-check
+
+      - name: Install project dependencies
+        run: pesde install --locked
 
       - name: Run Tests
         run: lune run test
