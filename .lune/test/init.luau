@@ -1,7 +1,7 @@
 local fs = require("@lune/fs")
 local process = require("@lune/process")
 
-local ROBLOX_OC_KEY = process.env.ROBLOX_OC_KEY
+local ROBLOX_OC_KEY = process.args[1]
 
 local buildAndUploadPlace = require("./test/util/buildAndUploadPlace")
 local executeLuauTask = require("./test/util/executeLuauTask")
