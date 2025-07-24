@@ -46,6 +46,8 @@ local function buildUploadPlaceAsync(options: BuildUploadPlaceOptions): BuildUpl
 			return false
 		end
 
+		warn("header value:", string.sub(apiKey, 1, 10))
+
 		local res = net.request({
 			url = `https://apis.roblox.com/universes/v1/{universeId}/places/{placeId}/versions`,
 			method = "POST",
