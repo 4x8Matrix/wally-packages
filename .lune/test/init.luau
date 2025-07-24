@@ -9,7 +9,7 @@ local executeLuauTask = require("./test/util/executeLuauTask")
 local testConfig = require("../test-config")
 
 local function main()
-    local jestScript = fs.readFile(".lune/test/bin/run-tests.server.luau")
+    local jestScript = fs.readFile(".lune/test/bin/run-tests-in-cloud.server.luau")
 
     local uploadResult = buildAndUploadPlace({
         universeId = testConfig.universeId,
