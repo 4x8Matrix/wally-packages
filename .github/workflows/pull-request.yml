@@ -44,5 +44,7 @@ jobs:
       - name: Setup Rokit
         uses: CompeyDev/setup-rokit@v0.1.2
 
-      - name: Run Linter
+      - name: Run Tests
         run: lune run test
+        env:
+          ROBLOX_OC_KEY: ${{ secrets.ROBLOX_OC_KEY }}
