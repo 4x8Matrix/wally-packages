@@ -1,0 +1,16 @@
+name = "4x8matrix/wally_packages"
+version = "0.1.0"
+license = "MIT"
+
+[target]
+environment = "roblox"
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
+
+[wally_indices]
+default = "https://github.com/UpliftGames/wally-index"
+
+[dev_dependencies]
+JestGlobals = { wally = "jsdotlua/jest-globals", version = "^3.10.0" }
+Jest = { wally = "jsdotlua/jest", version = "^3.10.0" }

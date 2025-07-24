@@ -1,4 +1,4 @@
-local Signal = require(script.Parent.Signal)
+local Signal = require("@self/../Packages/Signal")
 
 local baseCameraInstance = workspace.CurrentCamera:Clone()
 

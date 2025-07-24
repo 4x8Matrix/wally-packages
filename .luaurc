@@ -1,5 +1,9 @@
 {
-	"languageMode": "strict",
-	"lint": { "*": false },
-	"aliases": { }
+  "languageMode": "strict",
+  "lint": {
+    "*": false
+  },
+  "aliases": {
+    "lune": "~/.lune/.typedefs/0.10.1/"
+  }
 }

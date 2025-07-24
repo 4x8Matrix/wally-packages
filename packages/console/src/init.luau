@@ -8,7 +8,7 @@ local BLUE = "\27\91\51\52\109"
 local YELLOW = "\27\91\51\51\109"
 local RED = "\27\91\51\49\109"
 
-local LOG_LEVEL_COLORS = {
+local LOG_LEVEL_COLORS = table.freeze({
 	["Debug"] = `{DIM}`,
 	["Info"] = `{CYAN}`,
 	["Notice"] = `{BLUE}`,
@@ -17,7 +17,7 @@ local LOG_LEVEL_COLORS = {
 	["Critical"] = `{RED}`,
 	["Alert"] = `{BOLD}{RED}`,
 	["Emergency"] = `{BOLD}{RED}`,
-}
+})
 
 local LOG_LEVEL_PRIORITIES = { "Debug", "Info", "Notice", "Warn", "Error", "Critical", "Alert", "Emergency" }
 

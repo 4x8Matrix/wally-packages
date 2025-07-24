@@ -1,0 +1,10 @@
+{
+  "luau-lsp.sourcemap.rojoProjectFile": "test.project.json",
+  "luau-lsp.ignoreGlobs": [
+    "**/DevPackages/**",
+    "**/Packages/**",
+    "**/.pesde/**",
+    "*.spec.luau",
+    "jest.config.luau"
+  ]
+}

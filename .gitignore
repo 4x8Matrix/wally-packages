@@ -1,11 +1,13 @@
 *.rbxl
-*.lock
 
-**/Packages/**
-**/ServerPackages/**
-**/DevPackages/**
+Packages
+ServerPackages
+DevPackages
 
-**/luau_packages/**
-**/lune_packages/**
+luau_packages
+lune_packages
+roblox_packages
+
+roblox.d.lua
 
 sourcemap.json
