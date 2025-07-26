@@ -47,6 +47,10 @@ local function main()
 		`sourcemap.json`,
 	})
 
+	execute("pesde", {
+		"install",
+	})
+
 	execute("luaulsp", {
 		"analyze",
 		"--defs=roblox.d.lua",
