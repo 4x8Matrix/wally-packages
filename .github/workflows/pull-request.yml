@@ -25,8 +25,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: CompeyDev/setup-rokit@v0.1.2
+      - uses: lumin-org/setup-pesde@v0.4.1
+        with:
+          cache: true
+          version: v0.7.0-rc.6+registry.0.2.3-rc.3
 
-      - name: Run Linter
+      - name: Run Type Checker
         run: lune run type
 
   run-tests:
