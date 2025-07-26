@@ -6,5 +6,6 @@
     "**/.pesde/**",
     "*.spec.luau",
     "jest.config.luau"
-  ]
+  ],
+  "editor.formatOnSave": true
 }

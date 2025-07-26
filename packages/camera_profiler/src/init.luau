@@ -1,4 +1,4 @@
-local Signal = require("@self/../Packages/Signal")
+local Signal = require(script.Parent.Signal)
 
 local baseCameraInstance = workspace.CurrentCamera:Clone()
 
@@ -113,6 +113,18 @@ function CameraProfiler.Profile(
 		Construct = profilePrototype.Construct,
 		Start = profilePrototype.Start,
 		Stop = profilePrototype.Stop,
+
+		Destroy = function()
+			if activeProfile == profiles[profilePrototype.Name] then
+				callLifecycle(profiles[profilePrototype.Name], "Stop")
+
+				self.CameraStopped:FireDeferred(profilePrototype.Name)
+
+				activeProfile = nil
+			end
+
+			profiles[profilePrototype.Name] = nil
+		end,
 	}
 
 	profiles[profilePrototype.Name] = profile
@@ -178,6 +190,8 @@ export type CameraProfiler = typeof(CameraProfiler)
 
 export type Profile = ProfilePrototype & {
 	Instance: Camera,
+
+	Destroy: (self: Profile) -> (),
 }
 
 export type ProfilePrototype = {

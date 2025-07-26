@@ -3,31 +3,22 @@
 	"emitLegacyScripts": false,
 	"tree": {
 		"$className": "DataModel",
-
 		"ReplicatedStorage": {
 			"Packages": {
-				"$className": "Folder",
-
+				"$path": "roblox_packages",
 				"CameraProfiler": {
 					"$path": "packages/camera_profiler"
 				},
 				"Console": {
 					"$path": "packages/console"
 				}
-			},
-
-			"DevPackages": {
-				"$className": "Folder",
-				"$path": "roblox_packages"
 			}
 		},
-
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
 			"$properties": {
 				"LoadStringEnabled": true
 			},
-
 			"run-tests-in-studio": {
 				"$path": ".lune/test/bin/run-tests-in-studio.server.luau"
 			}

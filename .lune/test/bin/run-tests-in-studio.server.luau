@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 -- selene: allow(global_usage)
 _G.NOCOLOR = true
 
-local Jest = require(ReplicatedStorage.DevPackages.Jest)
+local Jest = require(ReplicatedStorage.Packages.Jest)
 
 local processServiceExists, ProcessService = pcall(function()
 	-- selene: allow(incorrect_standard_library_use)
@@ -14,10 +14,10 @@ local status, result = Jest.runCLI(ReplicatedStorage.Packages, {
 	ci = false,
 	verbose = false,
 
-	testMatch = { "**/*.spec" }
+	testMatch = { "**/*.spec" },
 }, {
 	ReplicatedStorage.Packages.CameraProfiler,
-	ReplicatedStorage.Packages.Console
+	ReplicatedStorage.Packages.Console,
 }):awaitStatus()
 
 if status == "Rejected" then
