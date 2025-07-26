@@ -40,28 +40,24 @@ local function main()
 		downloadRobloxTypes()
 	end
 
-	for _, packageName in fs.readDir("packages") do
-		execute("wally", { "install" }, { cwd = `packages/{packageName}` })
+	execute("rojo", {
+		"sourcemap",
+		`test.project.json`,
+		"-o",
+		`sourcemap.json`,
+	})
 
-		execute("rojo", {
-			"sourcemap",
-			`packages/{packageName}/development.project.json`,
-			"-o",
-			`packages/{packageName}/sourcemap.json`
-		})
-		
-		execute("luaulsp", {
-			"analyze",
-			"--defs=roblox.d.lua",
-			`--sourcemap=packages/{packageName}/sourcemap.json`,
-			`--base-luaurc=.luaurc`,
-			`--platform=roblox`,
-			`--settings=.vscode/settings.json`,
-			`packages/{packageName}/`
-		})
+	execute("luaulsp", {
+		"analyze",
+		"--defs=roblox.d.lua",
+		`--sourcemap=sourcemap.json`,
+		`--base-luaurc=.luaurc`,
+		`--platform=roblox`,
+		`--settings=.vscode/settings.json`,
+		`packages/`,
+	})
 
-		print(`[Type-Projects]: project '{packageName}' luau lsp OK`)
-	end
+	print(`[Type-Projects]: projects pass luau lsp OK`)
 end
 
 if TYPE_CHECK_ENABLED then
