@@ -1,0 +1,3 @@
+local Boilerplate = {}
+
+return Boilerplate

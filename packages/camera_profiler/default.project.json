@@ -1,0 +1,7 @@
+{
+	"name": "camera-profiler",
+	"emitLegacyScripts": false,
+	"tree": {
+		"$path": "src"
+	}
+}

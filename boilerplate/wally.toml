@@ -1,0 +1,13 @@
+[package]
+name = "4x8matrix/boilerplate-package"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+private = true
+
+[place]
+shared-packages = "game.ReplicatedStorage.Packages"
+
+[dependencies]
+
+[server-dependencies]

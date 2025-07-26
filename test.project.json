@@ -1,0 +1,27 @@
+{
+	"name": "jest-tests",
+	"emitLegacyScripts": false,
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"Packages": {
+				"$path": "roblox_packages",
+				"CameraProfiler": {
+					"$path": "packages/camera_profiler"
+				},
+				"Console": {
+					"$path": "packages/console"
+				}
+			}
+		},
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"$properties": {
+				"LoadStringEnabled": true
+			},
+			"run-tests-in-studio": {
+				"$path": ".lune/test/bin/run-tests-in-studio.server.luau"
+			}
+		}
+	}
+}

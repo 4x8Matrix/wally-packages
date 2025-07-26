@@ -17,11 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Aftman
-        uses: ok-nick/setup-aftman@v0.4.2
+      - name: Setup Rokit
+        uses: CompeyDev/setup-rokit@v0.1.2
 
       - name: Update Binaries
-        run: lune update-binaries
+        run: lune run build
 
       - name: Commit changes
         run: |

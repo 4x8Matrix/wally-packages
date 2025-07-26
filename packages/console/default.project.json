@@ -1,0 +1,7 @@
+{
+	"name": "Console",
+	"emitLegacyScripts": false,
+	"tree": {
+		"$path": "src"
+	}
+}

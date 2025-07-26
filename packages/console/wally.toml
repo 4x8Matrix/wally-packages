@@ -1,0 +1,12 @@
+[package]
+name = "4x8matrix/console"
+version = "3.0.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[place]
+shared-packages = "game.ReplicatedStorage.Packages"
+
+[dependencies]
+
+[server-dependencies]

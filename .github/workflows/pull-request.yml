@@ -1,3 +1,5 @@
+name: Lint, Typecheck & Test
+
 on:
   workflow_dispatch:
 
@@ -12,23 +14,42 @@ jobs:
   lint-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Aftman
-        uses: ok-nick/setup-aftman@v0.4.2
+      - uses: actions/checkout@v4
+      - uses: CompeyDev/setup-rokit@v0.1.2
 
       - name: Run Linter
-        run: lune lint-check
+        run: lune run lint
 
   type-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: CompeyDev/setup-rokit@v0.1.2
+      - uses: lumin-org/setup-pesde@v0.4.1
+        with:
+          cache: true
+          version: v0.7.0-rc.6+registry.0.2.3-rc.3
 
-      - name: Setup Aftman
-        uses: ok-nick/setup-aftman@v0.4.2
+      - name: Run Type Checker
+        run: lune run type
 
-      - name: Run Linter
-        run: lune type-check
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: CompeyDev/setup-rokit@v0.1.2
+      - uses: lumin-org/setup-pesde@v0.4.1
+        with:
+          cache: true
+          version: v0.7.0-rc.6+registry.0.2.3-rc.3
+
+      - name: Install binary dependencies
+        run: rokit install --no-trust-check
+
+      - name: Install project dependencies
+        run: pesde install --locked
+
+      - name: Run Tests
+        run: lune run test
+        env:
+          ROBLOX_OC_KEY: ${{ secrets.ROBLOX_OC_KEY }}

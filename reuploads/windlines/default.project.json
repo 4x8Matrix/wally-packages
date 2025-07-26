@@ -1,0 +1,7 @@
+{
+	"name": "Windline",
+	"emitLegacyScripts": false,
+	"tree": {
+		"$path": "src"
+	}
+}

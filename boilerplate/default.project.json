@@ -1,0 +1,7 @@
+{
+	"name": "boilerplate",
+	"emitLegacyScripts": false,
+	"tree": {
+		"$path": "src"
+	}
+}
