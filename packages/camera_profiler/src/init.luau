@@ -7,13 +7,12 @@ local activeProfile: Profile?
 
 --[=[
 	@class CameraProfiler
-	@__index CameraProfiler.Prototype
 
 	The Camera Profiler package represents a singleton that you can use to better leverage the Camera system wihin the Roblox Environment. This camera system
 	works through setting `Workspace.CurrentCamera` to the camera the developer wants to see.
 
 	Example of how you would create a profile
-	```luau
+	```lua
 	local BlimpCameraProfile = CameraProfiler:Profile({
 		Name = "BlimpCamera"
 	})
@@ -36,12 +35,12 @@ local activeProfile: Profile?
 	```
 
 	Example of how you would use the newly created profile
-	```luau
+	```lua
 	CameraProfiler:Set("BlimpCamera")
 	```
 
 	Example of how you would integrate a Profile with the default Camera Roblox creates.
-	```luau
+	```lua
 	local DefaultCameraProfile = CameraProfiler:Profile({
 		Name = "DefaultCamera"
 	}, workspace.CurrentCamera)
@@ -49,20 +48,20 @@ local activeProfile: Profile?
 ]=]
 local CameraProfiler = {}
 
---[[
-	@prop CameraStarted Signal<Name: string>
+--[=[
+	@prop CameraStarted Signal\<Name: string>
 	@within CameraProfiler
 
-	 This signal is fired after a camera has started.
-]]
+	This signal is fired after a camera has started.
+]=]
 CameraProfiler.CameraStarted = Signal.new()
 
---[[
-	@prop CameraStopped Signal<Name: string>
+--[=[
+	@prop CameraStopped Signal\<Name: string>
 	@within CameraProfiler
 
 	This signal is fired after a camera has stopped.
-]]
+]=]
 CameraProfiler.CameraStopped = Signal.new()
 
 --[[
@@ -78,11 +77,16 @@ end
 	@method Profile
 	@within CameraProfiler
 
+	@param profilePrototype { Name: string, Construct: ((self: Profile) -> ())?, Start: ((self: Profile) -> ())?, Stop: ((self: Profile) -> ())?, }
+	@param cameraInstance Camera?
+
+	@return Profile
+
 	Call this function to register your camera profile, a camera profile is a Roblox table that wraps around a camera instance, the goal of this table
 		is to make interacting and handling with cameras easier within the engine.
 
 	Example:
-	```luau
+	```lua
 	local CameraProfile = CameraProfiler:Profile({
 		Name = "CameraProfile"
 	})
@@ -146,6 +150,9 @@ end
 	@method Set
 	@within CameraProfiler
 
+	@param profileName string
+	@return ()
+
 	Will set what the active camera should be, sideeffects of calling this method are:
 		- Will call the `Stop` lifecycle on the current camera instance.
 		- Will set the `Workspace.CurrentCamera` property to the updated camera instance.
@@ -179,6 +186,8 @@ end
 --[=[
 	@method Get
 	@within CameraProfiler
+
+	@return string?
 
 	Will return the name of the currently active camera, or nil.
 ]=]

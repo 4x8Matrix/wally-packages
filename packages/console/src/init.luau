@@ -32,7 +32,6 @@ local globalConfiguration = {
 
 --[=[
 	@class Console
-	@__index Console.Prototype
 
 	A comprehensive logging package for Luau, providing configurable logging levels, formatted output, ANSI color support (won't work in Roblox),
 	timestamps, and traceback integration - it's intention is to make what limited control we have over the output, easier to work with.
@@ -40,34 +39,7 @@ local globalConfiguration = {
 	This console library implements the following APIs as to remain in parity with the following document:
 		- https://www.sumologic.com/glossary/log-levels
 
-	Simple usage of this library:
-	```luau
-	Console:Debug("This is a debug message.")
-	Console:Info("This is an informational message.")
-	Console:Warn("This is a warning!")
-	Console:Error("Something went wrong!")
-	```
-
-	Configuration of this library:
-	```luau
-	Console:Configure({
-		LogLevel = "Info", -- Only show messages at Info level or higher
-		Timestamps = true, -- Enable timestamps
-		ANSI = true,       -- Enable ANSI colors (requires an ANSI-compatible console)
-		Name = "MyAwesomeScript", -- Custom name for the logger instance
-		Format = "[%*][%*][%*][%*]: %*%*%*" -- Custom format string (see Console.Configure for details)
-	})
-
-	Console:Debug("This debug message will not appear due to LogLevel configuration.")
-	Console:Info("This info message will appear with timestamp and ANSI colors.")
-	```
-
-	Advanced usage of this library:
-	```luau
-	Console:Debug("My Part:", workspace.Part)
-	Console:Info("Player Position:", game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
-	Console:Warn("Configuration Table:", { enabled = true, maxAttempts = 5, data = { a = 1, b = "hello" } })
-	```
+	See child pages for an example of how you can take advantage of this package.
 ]=]
 local Console = {}
 
@@ -257,23 +229,16 @@ local function meetsLogLevelRequirement(hash: string): boolean
 	return currentLogLevelPriority >= targetLoglevelPriority
 end
 
---[=[
-	@method Stringify
-	@within Console
-
-	Will take a value, and return the stringified version of said value.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Stringify(self: Console, value): string
 	return stringify(getScriptConfiguration(self.Name), value)
 end
 
---[=[
-	@method Debug
-	@within Console
-
-	Debug logs are given the numerical value “7.” These logs typically contain information that is only useful
-	during the debug phase and may be of little value during production.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Debug(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
 		local content = constructContent(self.Name, ...)
@@ -282,13 +247,9 @@ function Console.Prototype.Debug(self: Console, ...)
 	end
 end
 
---[=[
-	@method Info
-	@within Console
-
-	Informational logs are given the numerical value “6.” They include information about successful operations
-	within the application, such as a successful start, pause, or exit of the application.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Info(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
 		local content = constructContent(self.Name, ...)
@@ -297,14 +258,9 @@ function Console.Prototype.Info(self: Console, ...)
 	end
 end
 
---[=[
-	@method Notice
-	@within Console
-
-	Notice logs are given the numerical value “5.” They include information about events that may be unusual but
-	are not errors. Notice logs are technically normal, but still significant enough to have their own severity
-	level between information and warning.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Notice(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
 		local content = constructContent(self.Name, ...)
@@ -313,14 +269,9 @@ function Console.Prototype.Notice(self: Console, ...)
 	end
 end
 
---[=[
-	@method Warn
-	@within Console
-
-	Warning logs are given the numerical value “4.” Warning conditions are slightly less severe than error conditions.
-	Error conditions happen when an operation fails, while a warning might indicate that an operation will fail in the
-	future if action is not taken now.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Warn(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
 		local content = constructContent(self.Name, ...)
@@ -329,13 +280,9 @@ function Console.Prototype.Warn(self: Console, ...)
 	end
 end
 
---[=[
-	@method Error
-	@within Console
-
-	Error logs are given the numerical value “3.” This category is assigned to event logs that contain an application
-	error message.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Error(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
 		local content = constructContent(self.Name, ...)
@@ -344,13 +291,9 @@ function Console.Prototype.Error(self: Console, ...)
 	end
 end
 
---[=[
-	@method Critical
-	@within Console
-
-	Critical logs are given the numerical value “2.” This category is assigned for critical errors, such as hardware
-	failure.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Critical(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
 		local content = constructContent(self.Name, ...)
@@ -359,14 +302,9 @@ function Console.Prototype.Critical(self: Console, ...)
 	end
 end
 
---[=[
-	@method Alert
-	@within Console
-
-	Alert logs are given the numerical value “1.” This category is assigned when an event log requires an immediate
-	response, such as when a system database becomes corrupted and must be restored to prevent the loss of critical
-	data or services.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Alert(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
 		local content = constructContent(self.Name, ...)
@@ -375,13 +313,9 @@ function Console.Prototype.Alert(self: Console, ...)
 	end
 end
 
---[=[
-	@method Emergency
-	@within Console
-
-	Emergency logs are given the numerical value “0”. This category is assigned when an event log indicates that the
-	system is completely unusable.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Emergency(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
 		local content = constructContent(self.Name, ...)
@@ -390,14 +324,9 @@ function Console.Prototype.Emergency(self: Console, ...)
 	end
 end
 
---[=[
-	@method Configure
-	@within Console
-
-	Configures the logging behavior specifically for the **calling script**.
-	Each script maintains its own configuration, allowing for granular control over its logging output.
-	Settings applied here will override any global defaults set by `Console.SetDefaults`.
-]=]
+--[[
+	Documented within @console.docs.luau
+]]
 function Console.Prototype.Configure(self: Console, config: Configuration)
 	local scriptConfig = getScriptConfiguration(self.Name)
 
@@ -409,6 +338,9 @@ end
 --[=[
 	@function setDefaults
 	@within Console
+
+	@param Configuration { LogLevel: LogLevel?, Format: string?, Name: string?, Tracebacks: boolean?, Timestamps: boolean?, ANSI: boolean?, }
+	@return ()
 
 	Establishes the **global default configuration** for the Console logger.
 	These defaults apply to all scripts that use the Console package unless a script
@@ -425,6 +357,11 @@ end
 --[=[
 	@function new
 	@within Console
+
+	@param name string
+	@param Configuration { LogLevel: LogLevel?, Format: string?, Name: string?, Tracebacks: boolean?, Timestamps: boolean?, ANSI: boolean?, }?
+
+	@return Logger
 
 	Will instantiate a new console object, this is how you'll communicate with the 
 	console library.
