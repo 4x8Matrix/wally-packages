@@ -40,15 +40,15 @@ local function main()
 		downloadRobloxTypes()
 	end
 
+	execute("pesde", {
+		"install",
+	})
+
 	execute("rojo", {
 		"sourcemap",
 		`test.project.json`,
 		"-o",
 		`sourcemap.json`,
-	})
-
-	execute("pesde", {
-		"install",
 	})
 
 	execute("luaulsp", {
