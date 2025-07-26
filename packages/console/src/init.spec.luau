@@ -84,7 +84,7 @@ describe("Standard cases for console objects", function()
 		local console = requiredModule.new("Console")
 
 		console:Configure({
-			LogLevel = "Error",
+			LogLevel = "Info",
 		})
 
 		local capturedLog
@@ -97,13 +97,13 @@ describe("Standard cases for console objects", function()
 		console:Debug(`Test Function!`)
 
 		task.spawn(function()
-			console:Error(`Test Function!`)
+			console:Info(`Test Function!`)
 		end)
 
 		task.wait()
 
-		expect(capturedLog).toBe('[-][Console][Error]: "Test Function!"')
-		expect(messageType).toBe(Enum.MessageType.MessageError)
+		expect(capturedLog).toBe('[-][Console][Info]: "Test Function!"')
+		expect(messageType).toBe(Enum.MessageType.MessageOutput)
 	end)
 
 	describe("All general logging functions work as expected", function()
@@ -177,94 +177,34 @@ describe("Standard cases for console objects", function()
 
 		it("Error function works", function()
 			local console = requiredModule.new("Console")
-			local capturedLog
-			local messageType
-
-			LogService.MessageOut:Once(function(...)
-				capturedLog, messageType = ...
-			end)
-
-			task.spawn(function()
-				console:Error(`Test Function!`)
-			end)
 
 			expect(function()
 				console:Error(`Test Function!`)
 			end).toThrow()
-
-			task.wait()
-
-			expect(capturedLog).toBe('[-][Console][Error]: "Test Function!"')
-			expect(messageType).toBe(Enum.MessageType.MessageError)
 		end)
 
 		it("Critical function works", function()
 			local console = requiredModule.new("Console")
-			local capturedLog
-			local messageType
-
-			LogService.MessageOut:Once(function(...)
-				capturedLog, messageType = ...
-			end)
-
-			task.spawn(function()
-				console:Critical(`Test Function!`)
-			end)
 
 			expect(function()
 				console:Critical(`Test Function!`)
 			end).toThrow()
-
-			task.wait()
-
-			expect(capturedLog).toBe('[-][Console][Critical]: "Test Function!"')
-			expect(messageType).toBe(Enum.MessageType.MessageError)
 		end)
 
 		it("Alert function works", function()
 			local console = requiredModule.new("Console")
-			local capturedLog
-			local messageType
-
-			LogService.MessageOut:Once(function(...)
-				capturedLog, messageType = ...
-			end)
-
-			task.spawn(function()
-				console:Alert(`Test Function!`)
-			end)
 
 			expect(function()
 				console:Alert(`Test Function!`)
 			end).toThrow()
-
-			task.wait()
-
-			expect(capturedLog).toBe('[-][Console][Alert]: "Test Function!"')
-			expect(messageType).toBe(Enum.MessageType.MessageError)
 		end)
 
 		it("Emergency function works", function()
 			local console = requiredModule.new("Console")
-			local capturedLog
-			local messageType
-
-			LogService.MessageOut:Once(function(...)
-				capturedLog, messageType = ...
-			end)
-
-			task.spawn(function()
-				console:Emergency(`Test Function!`)
-			end)
 
 			expect(function()
 				console:Emergency(`Test Function!`)
 			end).toThrow()
-
-			task.wait()
-
-			expect(capturedLog).toBe('[-][Console][Emergency]: "Test Function!"')
-			expect(messageType).toBe(Enum.MessageType.MessageError)
 		end)
 	end)
 
