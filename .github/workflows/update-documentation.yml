@@ -5,7 +5,8 @@ on:
 
   push:
     branches:
-      - Master
+      - master
+      - refactor/project-structure
 
 permissions:
   contents: write
