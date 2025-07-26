@@ -31,42 +31,43 @@ local globalConfiguration = {
 }
 
 --[=[
-    @class Console
+	@class Console
+	@__index Console.Prototype
 
-    A comprehensive logging package for Luau, providing configurable logging levels, formatted output, ANSI color support (won't work in Roblox),
-    timestamps, and traceback integration - it's intention is to make what limited control we have over the output, easier to work with.
+	A comprehensive logging package for Luau, providing configurable logging levels, formatted output, ANSI color support (won't work in Roblox),
+	timestamps, and traceback integration - it's intention is to make what limited control we have over the output, easier to work with.
 
-    This console library implements the following APIs as to remain in parity with the following document:
-        - https://www.sumologic.com/glossary/log-levels
+	This console library implements the following APIs as to remain in parity with the following document:
+		- https://www.sumologic.com/glossary/log-levels
 
-    Simple usage of this library:
-    ```luau
-    Console:Debug("This is a debug message.")
-    Console:Info("This is an informational message.")
-    Console:Warn("This is a warning!")
-    Console:Error("Something went wrong!")
-    ```
+	Simple usage of this library:
+	```luau
+	Console:Debug("This is a debug message.")
+	Console:Info("This is an informational message.")
+	Console:Warn("This is a warning!")
+	Console:Error("Something went wrong!")
+	```
 
-    Configuration of this library:
-    ```luau
-    Console:Configure({
-        LogLevel = "Info", -- Only show messages at Info level or higher
-        Timestamps = true, -- Enable timestamps
-        ANSI = true,       -- Enable ANSI colors (requires an ANSI-compatible console)
-        Name = "MyAwesomeScript", -- Custom name for the logger instance
-        Format = "[%*][%*][%*][%*]: %*%*%*" -- Custom format string (see Console.Configure for details)
-    })
+	Configuration of this library:
+	```luau
+	Console:Configure({
+		LogLevel = "Info", -- Only show messages at Info level or higher
+		Timestamps = true, -- Enable timestamps
+		ANSI = true,       -- Enable ANSI colors (requires an ANSI-compatible console)
+		Name = "MyAwesomeScript", -- Custom name for the logger instance
+		Format = "[%*][%*][%*][%*]: %*%*%*" -- Custom format string (see Console.Configure for details)
+	})
 
-    Console:Debug("This debug message will not appear due to LogLevel configuration.")
-    Console:Info("This info message will appear with timestamp and ANSI colors.")
-    ```
+	Console:Debug("This debug message will not appear due to LogLevel configuration.")
+	Console:Info("This info message will appear with timestamp and ANSI colors.")
+	```
 
-    Advanced usage of this library:
-    ```luau
-    Console:Debug("My Part:", workspace.Part)
-    Console:Info("Player Position:", game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
-    Console:Warn("Configuration Table:", { enabled = true, maxAttempts = 5, data = { a = 1, b = "hello" } })
-    ```
+	Advanced usage of this library:
+	```luau
+	Console:Debug("My Part:", workspace.Part)
+	Console:Info("Player Position:", game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+	Console:Warn("Configuration Table:", { enabled = true, maxAttempts = 5, data = { a = 1, b = "hello" } })
+	```
 ]=]
 local Console = {}
 
@@ -74,7 +75,7 @@ Console.Prototype = {}
 Console.Public = {}
 
 --[[
-    Responsible for taking an input of any type, and formatting it in a way which makes it human readable.
+	Responsible for taking an input of any type, and formatting it in a way which makes it human readable.
 ]]
 local function formatValue(value: any, config: Configuration, seen: { [{}]: boolean }?): string
 	local type = typeof(value)
@@ -182,8 +183,8 @@ local function formatValue(value: any, config: Configuration, seen: { [{}]: bool
 end
 
 --[[
-    Responsible for taking in an array of unknown types, will then format - and return a concatenated version
-    of these unknown types merged together.
+	Responsible for taking in an array of unknown types, will then format - and return a concatenated version
+	of these unknown types merged together.
 ]]
 local function stringify(configuration: Configuration, ...): string
 	local values = {}
@@ -196,7 +197,7 @@ local function stringify(configuration: Configuration, ...): string
 end
 
 --[[
-    Will return the configuration for the script that is calling a function in the Console library.
+	Will return the configuration for the script that is calling a function in the Console library.
 ]]
 local function getScriptConfiguration(hash: string): Configuration
 	if not configurations[hash] then
@@ -207,16 +208,16 @@ local function getScriptConfiguration(hash: string): Configuration
 end
 
 --[[
-    Will fetch the name of this script, supports Unix, Windows and Roblox paths.
+	Will fetch the name of this script, supports Unix, Windows and Roblox paths.
 
-    If this fails, it'll fallback to returning the full path name.
+	If this fails, it'll fallback to returning the full path name.
 ]]
 local function getScriptName(hash: string): string
 	return hash
 end
 
 --[[
-    Will construct the message that you'll see in the output.
+	Will construct the message that you'll see in the output.
 ]]
 local function constructContent(hash: string, ...): string
 	local configuration = getScriptConfiguration(hash)
@@ -244,7 +245,7 @@ local function constructContent(hash: string, ...): string
 end
 
 --[[
-    returns a boolean that defines if the API that calls this function is able to log to the output.
+	returns a boolean that defines if the API that calls this function is able to log to the output.
 ]]
 local function meetsLogLevelRequirement(hash: string): boolean
 	local configuration = getScriptConfiguration(hash)
@@ -257,19 +258,21 @@ local function meetsLogLevelRequirement(hash: string): boolean
 end
 
 --[=[
-    @within Console
+	@method Stringify
+	@within Console
 
-    Will take a value, and return the stringified version of said value.
+	Will take a value, and return the stringified version of said value.
 ]=]
 function Console.Prototype.Stringify(self: Console, value): string
 	return stringify(getScriptConfiguration(self.Name), value)
 end
 
 --[=[
-    @within Console
+	@method Debug
+	@within Console
 
-    Debug logs are given the numerical value “7.” These logs typically contain information that is only useful
-    during the debug phase and may be of little value during production.
+	Debug logs are given the numerical value “7.” These logs typically contain information that is only useful
+	during the debug phase and may be of little value during production.
 ]=]
 function Console.Prototype.Debug(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
@@ -280,10 +283,11 @@ function Console.Prototype.Debug(self: Console, ...)
 end
 
 --[=[
-    @within Console
+	@method Info
+	@within Console
 
-    Informational logs are given the numerical value “6.” They include information about successful operations
-    within the application, such as a successful start, pause, or exit of the application.
+	Informational logs are given the numerical value “6.” They include information about successful operations
+	within the application, such as a successful start, pause, or exit of the application.
 ]=]
 function Console.Prototype.Info(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
@@ -294,11 +298,12 @@ function Console.Prototype.Info(self: Console, ...)
 end
 
 --[=[
-    @within Console
+	@method Notice
+	@within Console
 
-    Notice logs are given the numerical value “5.” They include information about events that may be unusual but
-    are not errors. Notice logs are technically normal, but still significant enough to have their own severity
-    level between information and warning.
+	Notice logs are given the numerical value “5.” They include information about events that may be unusual but
+	are not errors. Notice logs are technically normal, but still significant enough to have their own severity
+	level between information and warning.
 ]=]
 function Console.Prototype.Notice(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
@@ -309,11 +314,12 @@ function Console.Prototype.Notice(self: Console, ...)
 end
 
 --[=[
-    @within Console
+	@method Warn
+	@within Console
 
-    Warning logs are given the numerical value “4.” Warning conditions are slightly less severe than error conditions.
-    Error conditions happen when an operation fails, while a warning might indicate that an operation will fail in the
-    future if action is not taken now.
+	Warning logs are given the numerical value “4.” Warning conditions are slightly less severe than error conditions.
+	Error conditions happen when an operation fails, while a warning might indicate that an operation will fail in the
+	future if action is not taken now.
 ]=]
 function Console.Prototype.Warn(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
@@ -324,10 +330,11 @@ function Console.Prototype.Warn(self: Console, ...)
 end
 
 --[=[
-    @within Console
+	@method Error
+	@within Console
 
-    Error logs are given the numerical value “3.” This category is assigned to event logs that contain an application
-    error message.
+	Error logs are given the numerical value “3.” This category is assigned to event logs that contain an application
+	error message.
 ]=]
 function Console.Prototype.Error(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
@@ -338,10 +345,11 @@ function Console.Prototype.Error(self: Console, ...)
 end
 
 --[=[
-    @within Console
+	@method Critical
+	@within Console
 
-    Critical logs are given the numerical value “2.” This category is assigned for critical errors, such as hardware
-    failure.
+	Critical logs are given the numerical value “2.” This category is assigned for critical errors, such as hardware
+	failure.
 ]=]
 function Console.Prototype.Critical(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
@@ -352,11 +360,12 @@ function Console.Prototype.Critical(self: Console, ...)
 end
 
 --[=[
-    @within Console
+	@method Alert
+	@within Console
 
-    Alert logs are given the numerical value “1.” This category is assigned when an event log requires an immediate
-    response, such as when a system database becomes corrupted and must be restored to prevent the loss of critical
-    data or services.
+	Alert logs are given the numerical value “1.” This category is assigned when an event log requires an immediate
+	response, such as when a system database becomes corrupted and must be restored to prevent the loss of critical
+	data or services.
 ]=]
 function Console.Prototype.Alert(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
@@ -367,10 +376,11 @@ function Console.Prototype.Alert(self: Console, ...)
 end
 
 --[=[
-    @within Console
+	@method Emergency
+	@within Console
 
-    Emergency logs are given the numerical value “0”. This category is assigned when an event log indicates that the
-    system is completely unusable.
+	Emergency logs are given the numerical value “0”. This category is assigned when an event log indicates that the
+	system is completely unusable.
 ]=]
 function Console.Prototype.Emergency(self: Console, ...)
 	if meetsLogLevelRequirement(self.Name) then
@@ -381,11 +391,12 @@ function Console.Prototype.Emergency(self: Console, ...)
 end
 
 --[=[
-    @within Console
+	@method Configure
+	@within Console
 
-    Configures the logging behavior specifically for the **calling script**.
-    Each script maintains its own configuration, allowing for granular control over its logging output.
-    Settings applied here will override any global defaults set by `Console.SetDefaults`.
+	Configures the logging behavior specifically for the **calling script**.
+	Each script maintains its own configuration, allowing for granular control over its logging output.
+	Settings applied here will override any global defaults set by `Console.SetDefaults`.
 ]=]
 function Console.Prototype.Configure(self: Console, config: Configuration)
 	local scriptConfig = getScriptConfiguration(self.Name)
@@ -396,11 +407,12 @@ function Console.Prototype.Configure(self: Console, config: Configuration)
 end
 
 --[=[
-    @within Console
+	@function setDefaults
+	@within Console
 
-    Establishes the **global default configuration** for the Console logger.
-    These defaults apply to all scripts that use the Console package unless a script
-    explicitly overrides them using `Console.Configure()`.
+	Establishes the **global default configuration** for the Console logger.
+	These defaults apply to all scripts that use the Console package unless a script
+	explicitly overrides them using `Console.Configure()`.
 ]=]
 function Console.Public.setDefaults(config: Configuration)
 	for key, value in config do
@@ -411,7 +423,8 @@ function Console.Public.setDefaults(config: Configuration)
 end
 
 --[=[
-    @within Console
+	@function new
+	@within Console
 
 	Will instantiate a new console object, this is how you'll communicate with the 
 	console library.
