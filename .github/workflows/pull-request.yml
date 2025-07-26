@@ -1,4 +1,4 @@
-name: Pull Request CI/CD
+name: Lint, Typecheck & Test
 
 on:
   workflow_dispatch:
