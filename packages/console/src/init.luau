@@ -237,7 +237,7 @@ local function constructContent(hash: string, ...): string
 		logLevel,
 		message,
 		`{ansiEnabled and RESET or ""}`,
-		`{tracebackEnabled and `\n{debug.traceback("", 3)}` or ``}`
+		`{tracebackEnabled and `\nstack traceback{debug.traceback("", 3)}` or ``}`
 	)
 
 	return content

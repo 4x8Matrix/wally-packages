@@ -8,13 +8,13 @@ local processServiceExists, ProcessService = pcall(function()
 end)
 
 local status, result = Jest.runCLI(ReplicatedStorage.Packages, {
-	ci = false,
+	ci = true,
 	verbose = false,
 
 	testMatch = { "**/*.spec" },
 }, {
-	ReplicatedStorage.Packages.CameraProfiler,
 	ReplicatedStorage.Packages.Console,
+	ReplicatedStorage.Packages.CameraProfiler,
 }):awaitStatus()
 
 if status == "Rejected" then
